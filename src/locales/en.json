@@ -1,0 +1,10 @@
+{
+  "storage-meter": {
+    "sectionTitle": "LOCAL WORKSPACE",
+    "syntheticNote": "SYNTHETIC / NO PRODUCTION DATA",
+    "usage": "{percent}% • {used} OF {total}",
+    "lastSync": "LAST SYNC {time}",
+    "retry": "Retry",
+    "errorTitle": "Storage usage failed to load"
+  }
+}

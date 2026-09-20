@@ -1,0 +1,52 @@
+{
+  "name": "@zephytiju/prism-storage-meter",
+  "version": "0.1.0",
+  "type": "module",
+  "description": "Platform Prism storage-meter micro-UI (component id \"storage-meter\"): the VAULT side panel's Local Workspace section — LOCAL WORKSPACE card with synthetic-data note, quota progress bar, percent • used OF total usage line, and optional last-sync line. The quota is computed from the stored file entries read through the embedded IFileEntry client over the Prism Lattice transport (summed sizeBytes against the configured quota — NOT interface-mediated); the bar turns warn at the configured threshold and threat at 100%. Routine read — no audit events. Ships en + zh-CN locale bundles.",
+  "license": "UNLICENSED",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    },
+    "./locales/*": "./locales/*"
+  },
+  "publishConfig": { "access": "public" },
+  "files": ["dist", "locales"],
+  "scripts": {
+    "dev": "vite --host 127.0.0.1",
+    "build": "tsc -p tsconfig.build.json && node scripts/copy-locales.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "vitest run",
+    "shot-demo": "node scripts/shot-demo.mjs"
+  },
+  "peerDependencies": {
+    "@mantine/core": "^8.1.1",
+    "@zephytiju/lattice-common-interfaces": ">=0.2.0",
+    "@zephytiju/prism-react": ">=0.1.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  },
+  "devDependencies": {
+    "@mantine/core": "8.1.1",
+    "@testing-library/dom": "^10.4.0",
+    "@testing-library/react": "^16.1.0",
+    "@types/node": "^22.10.2",
+    "@types/react": "^19.1.0",
+    "@types/react-dom": "^19.1.0",
+    "@zephytiju/lattice-common-interfaces": "0.2.0",
+    "@zephytiju/prism-react": "0.1.1",
+    "jsdom": "^25.0.1",
+    "puppeteer-core": "^24.10.0",
+    "react": "19.1.0",
+    "react-dom": "19.1.0",
+    "typescript": "^5.7.2",
+    "vite": "6.0.5",
+    "vitest": "^2.1.8"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "storage-meter": {
+    "sectionTitle": "本地工作区",
+    "syntheticNote": "合成数据 / 无生产数据",
+    "usage": "{percent}% • 已用 {used} / 共 {total}",
+    "lastSync": "上次同步 {time}",
+    "retry": "重试",
+    "errorTitle": "存储用量加载失败"
+  }
+}
