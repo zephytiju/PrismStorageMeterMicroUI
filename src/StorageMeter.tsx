@@ -5,7 +5,7 @@ import { useLatticeTransport } from "@zephytiju/prism-react";
 import { QuotaMeterBar } from "./QuotaMeterBar.js";
 import { UsageSummary } from "./UsageSummary.js";
 import { SyncFooter } from "./SyncFooter.js";
-import { CARD_DARK_BG, BORDER, MONO, MUTED, TEXT } from "./tokens.js";
+import { CARD_DARK_BG, BORDER, TEXT } from "./tokens.js";
 import { formatBytes } from "./format.js";
 import { formatMessage, stringsForLocale } from "./locales/index.js";
 import type { StorageMeterLocale } from "./locales/index.js";
@@ -15,8 +15,6 @@ export interface StorageMeterProps {
   readonly quotaBytes: number;
   /** Section card title (defaults to the locale's `sectionTitle`). */
   readonly title?: string;
-  /** The synthetic-data note under the title (defaults to the locale's `syntheticNote`). */
-  readonly note?: string;
   /** Stable IFileEntry.list scope the stored entries are read from (omit for the default scope). */
   readonly scope?: string;
   /** Usage percent at/above which the meter turns warn (default `85`). */
@@ -34,9 +32,9 @@ type LoadPhase = "busy" | "idle" | "error";
 /**
  * Platform Prism storage-meter micro-UI (component id "storage-meter"), the
  * VAULT side panel's Local Workspace section: the LOCAL WORKSPACE card with
- * the synthetic-data note, the quota progress bar, the
- * `{percent}% • {used} OF {total}` usage line, and the optional last-sync
- * line. The card's meter/summary/sync pieces render through the focused
+ * the quota progress bar, the `{percent}% • {used} OF {total}` usage line,
+ * and the optional last-sync line. The card's meter/summary/sync pieces
+ * render through the focused
  * QuotaMeterBar / UsageSummary / SyncFooter sub-components.
  *
  * The quota is COMPUTED from the stored file entries (design decision D4 —
@@ -57,7 +55,6 @@ type LoadPhase = "busy" | "idle" | "error";
 export function StorageMeter({
   quotaBytes,
   title,
-  note,
   scope,
   warnThresholdPercent = 85,
   lastSyncTime,
@@ -68,7 +65,6 @@ export function StorageMeter({
   // lastSyncTime VALUE is configuration-authored (the composer localizes it).
   const strings = stringsForLocale(locale);
   const resolvedTitle = title ?? strings.sectionTitle;
-  const resolvedNote = note ?? strings.syntheticNote;
   const resolvedErrorTitle = errorTitle ?? strings.errorTitle;
 
   const transport = useLatticeTransport();
@@ -173,15 +169,6 @@ export function StorageMeter({
         data-testid="storage-meter-title"
       >
         {resolvedTitle}
-      </Text>
-      <Text
-        ff={MONO}
-        fz={8}
-        mt={6}
-        style={{ color: MUTED, letterSpacing: "0.05em" }}
-        data-testid="storage-meter-note"
-      >
-        {resolvedNote}
       </Text>
       <QuotaMeterBar percent={percent} levelColor={levelColor} />
       <UsageSummary line={usageLine} levelColor={levelColor} />

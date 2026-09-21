@@ -90,11 +90,8 @@ describe("StorageMeter render states", () => {
     expect(screen.getByTestId("storage-meter-usage").getAttribute("style")).toContain(
       "var(--mantine-color-ok-filled)",
     );
-    // Card chrome: title, synthetic note, track.
+    // Card chrome: title, track.
     expect(screen.getByTestId("storage-meter-title").textContent).toBe("LOCAL WORKSPACE");
-    expect(screen.getByTestId("storage-meter-note").textContent).toBe(
-      "SYNTHETIC / NO PRODUCTION DATA",
-    );
     expect(screen.getByTestId("storage-meter-track")).toBeDefined();
   });
 
@@ -225,7 +222,6 @@ describe("StorageMeter i18n and configuration strings", () => {
     await waitFor(() => {
       expect(screen.getByTestId("storage-meter-title").textContent).toBe("本地工作区");
     });
-    expect(screen.getByTestId("storage-meter-note").textContent).toBe("合成数据 / 无生产数据");
     expect(screen.getByTestId("storage-meter-usage").textContent).toBe("64% • 已用 3.2 GB / 共 5 GB");
     expect(screen.getByTestId("storage-meter-sync").textContent).toBe("上次同步 04:11:52Z");
 
@@ -240,13 +236,12 @@ describe("StorageMeter i18n and configuration strings", () => {
     expect(screen.getByTestId("storage-meter-retry").textContent).toBe("重试");
   });
 
-  it("lets explicit title/note/errorTitle props override the locale strings", async () => {
+  it("lets an explicit title prop override the locale's section title", async () => {
     installListExecutor(async () => ({ entries }));
-    renderMeter({ quotaBytes: QUOTA, title: "MY WORKSPACE", note: "custom note" });
+    renderMeter({ quotaBytes: QUOTA, title: "MY WORKSPACE" });
     await waitFor(() => {
       expect(screen.getByTestId("storage-meter-title").textContent).toBe("MY WORKSPACE");
     });
-    expect(screen.getByTestId("storage-meter-note").textContent).toBe("custom note");
   });
 
   it("exports namespaced locale bundles that deep-merge with other components' bundles without collision", () => {
