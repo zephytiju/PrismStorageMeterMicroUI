@@ -1,7 +1,11 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
-import { Alert, Box, Button, Group, Skeleton, Stack, Text } from "@mantine/core";
+import { Alert, Button, Group, Skeleton, Stack, Text } from "@mantine/core";
 import { createFileEntryClient } from "@zephytiju/lattice-common-interfaces";
 import { useLatticeTransport } from "@zephytiju/prism-react";
+import { QuotaMeterBar } from "./QuotaMeterBar.js";
+import { UsageSummary } from "./UsageSummary.js";
+import { SyncFooter } from "./SyncFooter.js";
+import { CARD_DARK_BG, BORDER, MONO, MUTED, TEXT } from "./tokens.js";
 import { formatBytes } from "./format.js";
 import { formatMessage, stringsForLocale } from "./locales/index.js";
 import type { StorageMeterLocale } from "./locales/index.js";
@@ -25,12 +29,6 @@ export interface StorageMeterProps {
   readonly locale?: StorageMeterLocale;
 }
 
-const MONO = "var(--mantine-font-family-monospace)";
-const TEXT = "var(--mantine-color-text-filled)";
-const MUTED = "var(--mantine-color-muted-filled)";
-const CARD_DARK_BG = "var(--mantine-color-card-dark-filled)";
-const BORDER = "var(--mantine-color-border-filled)";
-
 type LoadPhase = "busy" | "idle" | "error";
 
 /**
@@ -38,7 +36,8 @@ type LoadPhase = "busy" | "idle" | "error";
  * VAULT side panel's Local Workspace section: the LOCAL WORKSPACE card with
  * the synthetic-data note, the quota progress bar, the
  * `{percent}% • {used} OF {total}` usage line, and the optional last-sync
- * line.
+ * line. The card's meter/summary/sync pieces render through the focused
+ * QuotaMeterBar / UsageSummary / SyncFooter sub-components.
  *
  * The quota is COMPUTED from the stored file entries (design decision D4 —
  * deliberately NOT interface-mediated): the entries are read through the
@@ -184,46 +183,10 @@ export function StorageMeter({
       >
         {resolvedNote}
       </Text>
-      <Box
-        mt={22}
-        style={{
-          height: 5,
-          background: BORDER,
-          borderRadius: 2,
-          overflow: "hidden",
-        }}
-        data-testid="storage-meter-track"
-      >
-        <Box
-          style={{
-            height: 5,
-            width: `${String(percent)}%`,
-            background: levelColor,
-            borderRadius: 2,
-          }}
-          data-testid="storage-meter-fill"
-        />
-      </Box>
-      <Text
-        ff={MONO}
-        fz={8}
-        fw={500}
-        mt={8}
-        style={{ color: levelColor, letterSpacing: "0.04em" }}
-        data-testid="storage-meter-usage"
-      >
-        {usageLine}
-      </Text>
+      <QuotaMeterBar percent={percent} levelColor={levelColor} />
+      <UsageSummary line={usageLine} levelColor={levelColor} />
       {lastSyncTime !== undefined ? (
-        <Text
-          ff={MONO}
-          fz={8}
-          mt={10}
-          style={{ color: MUTED, letterSpacing: "0.04em" }}
-          data-testid="storage-meter-sync"
-        >
-          {formatMessage(strings.lastSync, { time: lastSyncTime })}
-        </Text>
+        <SyncFooter line={formatMessage(strings.lastSync, { time: lastSyncTime })} />
       ) : null}
     </Stack>
   );
