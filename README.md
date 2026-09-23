@@ -5,8 +5,8 @@ Published to npm as [`@zephytiju/prism-storage-meter`](https://www.npmjs.com/pac
 
 The VAULT side panel's Local Workspace section (independent axiom component — the panel container
 itself is composed in the platform prism, never in code): the LOCAL WORKSPACE card with the
-synthetic-data note, the quota progress bar, the `{percent}% • {used} OF {total}` usage line, and
-the optional last-sync line. The quota is COMPUTED from the stored file entries (design decision
+quota progress bar, the `{percent}% • {used} OF {total}` usage line, and the optional last-sync
+line. The quota is COMPUTED from the stored file entries (design decision
 D4 — deliberately NOT interface-mediated): the entries are read through the EMBEDDED generated
 `IFileEntry` client over the Prism Lattice transport and their `sizeBytes` are summed against the
 configured `quotaBytes`; no quota interface exists or is called. The meter renders the `ok` token
@@ -22,7 +22,6 @@ Guanlan) consume it as-is; the component is platform-owned.
 | `quotaBytes` | **Required.** The workspace's storage quota limit in bytes — the usage ratio's denominator |
 | `locale` | UI locale for the component-fixed strings: `"en" \| "zh-CN"` (default `"en"`) — see [i18n](#internationalization-i18n) |
 | `title` | Section card title (defaults to the locale's `sectionTitle`) |
-| `note` | The synthetic-data note under the title (defaults to the locale's `syntheticNote`) |
 | `scope` | Stable `IFileEntry.list` scope the stored entries are read from (omit for the default scope — the whole store) |
 | `warnThresholdPercent` | Usage percent at/above which the meter turns `warn` (default `85`; `threat` at 100) |
 | `lastSyncTime` | Value interpolated into the locale's last-sync line; the line is omitted when absent |
@@ -48,15 +47,14 @@ embedded read.
 ## Internationalization (i18n)
 
 The component ships `en` and `zh-CN` locale bundles — `src/locales/en.json` / `src/locales/zh-CN.json` —
-and every component-fixed UI string is resolved from them (the card title, the synthetic-data
-note, the usage line, the last-sync line, the Retry button, and the error title). The component
+and every component-fixed UI string is resolved from them (the card title, the usage line, the
+last-sync line, the Retry button, and the error title). The component
 renders no hardcoded copy.
 
 ```json
 {
   "storage-meter": {
     "sectionTitle": "LOCAL WORKSPACE",
-    "syntheticNote": "SYNTHETIC / NO PRODUCTION DATA",
     "usage": "{percent}% • {used} OF {total}",
     "lastSync": "LAST SYNC {time}",
     "retry": "Retry",
@@ -69,7 +67,7 @@ renders no hardcoded copy.
 - `usage` uses simple `{percent}` / `{used}` / `{total}` placeholders interpolated with the
   computed percent and tiered byte sizes, and `lastSync` a `{time}` placeholder (plain
   substitution, no regexes — `formatMessage` is exported from the package entry).
-- Explicit `title` / `note` / `errorTitle` props override the locale strings; `lastSyncTime` is a
+- Explicit `title` / `errorTitle` props override the locale strings; `lastSyncTime` is a
   configuration-authored value (the composer localizes the time it passes).
 - **Composition-authored strings are localized by the composer; component-fixed strings live in the
   locale JSONs.**
@@ -156,3 +154,11 @@ independent axiom components) and the LOCAL WORKSPACE card of the v9 interactive
 https://qcnwge0wy4s0.feishu.cn/wiki/MQfXweoMvirMEykeHuDcCwkhnw9 — `storage-meter` (axiom) Local
 Workspace section; quota computed from stored file entries. Visual reference:
 `vault-standalone.html` `.sidebar` LOCAL WORKSPACE card.
+
+## Changelog
+
+- **REMOVED — public API delta (intentional):** the `note` prop and the `syntheticNote` locale
+  key (en + zh-CN) were removed, so the card no longer renders the "SYNTHETIC / NO PRODUCTION
+  DATA" line. That note was a demo-data disclaimer that leaked from the HTML prototype into the
+  component; the authoritative design (Component — Local Workspace · Storage) never specified
+  it. The card renders the title, quota bar, usage line, and optional last-sync line only.

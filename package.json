@@ -2,7 +2,7 @@
   "name": "@zephytiju/prism-storage-meter",
   "version": "0.1.0",
   "type": "module",
-  "description": "Platform Prism storage-meter micro-UI (component id \"storage-meter\"): the VAULT side panel's Local Workspace section — LOCAL WORKSPACE card with synthetic-data note, quota progress bar, percent • used OF total usage line, and optional last-sync line. The quota is computed from the stored file entries read through the embedded IFileEntry client over the Prism Lattice transport (summed sizeBytes against the configured quota — NOT interface-mediated); the bar turns warn at the configured threshold and threat at 100%. Routine read — no audit events. Ships en + zh-CN locale bundles.",
+  "description": "Platform Prism storage-meter micro-UI (component id \"storage-meter\"): the VAULT side panel's Local Workspace section — LOCAL WORKSPACE card, quota progress bar, percent • used OF total usage line, and optional last-sync line. The quota is computed from the stored file entries read through the embedded IFileEntry client over the Prism Lattice transport (summed sizeBytes against the configured quota — NOT interface-mediated); the bar turns warn at the configured threshold and threat at 100%. Routine read — no audit events. Ships en + zh-CN locale bundles.",
   "license": "UNLICENSED",
   "main": "./dist/index.js",
   "types": "./dist/index.d.ts",
